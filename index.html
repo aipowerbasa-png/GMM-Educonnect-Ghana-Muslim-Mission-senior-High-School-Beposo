@@ -141,5 +141,33 @@ function renderCourses(){
 }
 function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const GMM_SUPABASE_URL = "https://wdopvuwfhdoqvpmlpiml.supabase.co";
+
+  const GMM_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_kWegfsPpw0ZWYBzJUNwJmg_GffETvJO";
+
+  window.gmmSupabase = window.supabase.createClient(
+    GMM_SUPABASE_URL,
+    GMM_SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const connectionStatus = document.createElement("p");
+  connectionStatus.textContent = "Connecting to school database...";
+  connectionStatus.style.textAlign = "center";
+  document.querySelector(".login-card").appendChild(connectionStatus);
+
+  window.gmmSupabase.auth.getSession()
+    .then(({ error }) => {
+      connectionStatus.textContent = error
+        ? "Database connection needs attention."
+        : "School database connection ready.";
+    })
+    .catch(() => {
+      connectionStatus.textContent = "Unable to connect. Check your internet.";
+    });
+  </script>
+ 
 </body>
 </html>
